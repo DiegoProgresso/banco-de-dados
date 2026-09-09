@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Dados com Excel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #217346;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+        }
+
+        nav {
+            background: #185c37;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.08);
+        }
+
+        h2 {
+            color: #217346;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin: 20px 0 10px;
+            color: #185c37;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            padding: 20px;
+            background: #eaf5ee;
+            border-left: 5px solid #217346;
+            border-radius: 8px;
+        }
+
+        .card strong {
+            display: block;
+            font-size: 28px;
+            color: #217346;
+            margin-bottom: 8px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #217346;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f1f8f4;
+        }
+
+        .aprovado {
+            color: #16833c;
+            font-weight: bold;
+        }
+
+        .recuperacao {
+            color: #d98200;
+            font-weight: bold;
+        }
+
+        .filtros {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        select,
+        input,
+        button {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #217346;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #185c37;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #00ff88;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .resultado {
+            background: #eef8f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .pergunta {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f7f7f7;
+            border-radius: 8px;
+        }
+
+        .fluxo {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .fluxo div {
+            background: #217346;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        footer {
+            background: #185c37;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        @media(max-width: 700px) {
+            nav a {
+                display: block;
+                margin: 8px;
+            }
+
+            section {
+                margin: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Banco de Dados com Excel</h1>
+    <p>Técnico em Informática — 3º Ano</p>
+    <p>Construção e manipulação de um banco de dados no Excel</p>
+</header>
+
+<nav>
+    <a href="#conceito">Conceito</a>
+    <a href="#alunos">Alunos</a>
+    <a href="#consultas">Consultas</a>
+    <a href="#analise">Análise</a>
+    <a href="#desafio">Desafio</a>
+    <a href="#sql">SQL</a>
+    <a href="#perguntas">Perguntas</a>
+</nav>
+
+<section id="conceito">
+    <h2>1. O que é um Banco de Dados?</h2>
+
+    <p>
+        Um banco de dados é uma coleção organizada de informações que permite
+        armazenar, consultar, alterar e analisar dados.
+    </p>
+
+    <div class="cards">
+        <div class="card">
+            <strong>Campo</strong>
+            Coluna da tabela.
+        </div>
+
+        <div class="card">
+            <strong>Registro</strong>
+            Linha completa de informações.
+        </div>
+
+        <div class="card">
+            <strong>ID</strong>
+            Identificador único.
+        </div>
+
+        <div class="card">
+            <strong>Tabela</strong>
+            Conjunto organizado dos dados.
+        </div>
+    </div>
+
+    <h3>Excel como ferramenta de Banco de Dados</h3>
+
+    <p>
+        O Excel não substitui sistemas profissionais como MySQL,
+        PostgreSQL ou SQL Server, mas permite trabalhar com tabelas,
+        filtros, classificação, validação, fórmulas, gráficos e
+        Tabelas Dinâmicas.
+    </p>
+</section>
+
+<section id="alunos">
+    <h2>2. Banco de Dados de Alunos</h2>
+
+    <div class="filtros">
+        <input
+            type="text"
+            id="pesquisa"
+            placeholder="Pesquisar aluno..."
+            oninput="filtrar()"
+        >
+
+        <select id="cursoFiltro" onchange="filtrar()">
+            <option value="">Todos os cursos</option>
+            <option value="Informática">Informática</option>
+            <option value="Administração">Administração</option>
+        </select>
+
+        <select id="situacaoFiltro" onchange="filtrar()">
+            <option value="">Todas as situações</option>
+            <option value="Aprovado">Aprovado</option>
+            <option value="Recuperação">Recuperação</option>
+        </select>
+
+        <button onclick="ordenarNota()">Ordenar por Nota</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Curso</th>
+                    <th>Turma</th>
+                    <th>Idade</th>
+                    <th>Cidade</th>
+                    <th>Nota</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabelaAlunos"></tbody>
+        </table>
+    </div>
+</section>
+
+<section id="consultas">
+    <h2>3. Consultas</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <strong id="totalAlunos">10</strong>
+            Total de alunos
+        </div>
+
+        <div class="card">
+            <strong id="informatica">7</strong>
+            Informática
+        </div>
+
+        <div class="card">
+            <strong id="administracao">3</strong>
+            Administração
+        </div>
+
+        <div class="card">
+            <strong id="media">7,7</strong>
+            Média geral
+        </div>
+
+        <div class="card">
+            <strong id="maiorNota">9,5</strong>
+            Maior nota
+        </div>
+
+        <div class="card">
+            <strong id="menorNota">5,5</strong>
+            Menor nota
+        </div>
+
+        <div class="card">
+            <strong id="aprovados">7</strong>
+            Aprovados
+        </div>
+
+        <div class="card">
+            <strong id="recuperacao">3</strong>
+            Recuperação
+        </div>
+
+    </div>
+
+    <h3>Funções utilizadas no Excel</h3>
+
+    <pre>
+=CONT.SE(tbAlunos[Curso];"Informática")
+
+=MÉDIA(tbAlunos[Nota])
+
+=MÁXIMO(tbAlunos[Nota])
+
+=MÍNIMO(tbAlunos[Nota])
+
+=CONT.SE(tbAlunos[Situação];"Aprovado")
+
+=CONT.SE(tbAlunos[Situação];"Recuperação")
+    </pre>
+</section>
+
+<section id="analise">
+    <h2>4. Tabela Dinâmica e Análise</h2>
+
+    <h3>Quantidade de alunos por curso</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Informática</td>
+                <td>7</td>
+            </tr>
+
+            <tr>
+                <td>Administração</td>
+                <td>3</td>
+            </tr>
+
+            <tr>
+                <th>Total</th>
+                <th>10</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Quantidade por cidade</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cidade</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>São Paulo</td>
+                <td>5</td>
+            </tr>
+
+            <tr>
+                <td>Guarulhos</td>
+                <td>3</td>
+            </tr>
+
+            <tr>
+                <td>Osasco</td>
+                <td>1</td>
+            </tr>
+
+            <tr>
+                <td>Mairiporã</td>
+                <td>1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>O que é uma Tabela Dinâmica?</h3>
+
+    <p>
+        A Tabela Dinâmica permite resumir grandes quantidades de dados
+        rapidamente, facilitando a análise das informações.
+    </p>
+
+    <canvas id="grafico" width="700" height="350"></canvas>
+</section>
+
+<section id="desafio">
+    <h2>5. Desafio — Sistema de Alunos</h2>
+
+    <p>
+        O sistema utiliza duas notas para calcular automaticamente a média
+        e determinar a situação do aluno.
+    </p>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Curso</th>
+                    <th>Turma</th>
+                    <th>Nota 1</th>
+                    <th>Nota 2</th>
+                    <th>Média</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabelaDesafio"></tbody>
+        </table>
+    </div>
+
+    <h3>Fórmula da média</h3>
+
+    <pre>
+=MÉDIA([@Nota1];[@Nota2])
+    </pre>
+
+    <h3>Fórmula da situação</h3>
+
+    <pre>
+=SE([@Média]>=7;"Aprovado";"Recuperação")
+    </pre>
+
+    <h3>Requisitos cumpridos</h3>
+
+    <div class="resultado">
+        ✓ Criar tabela<br>
+        ✓ Utilizar ID<br>
+        ✓ Validação de dados<br>
+        ✓ Aplicar filtros<br>
+        ✓ Ordenar dados<br>
+        ✓ Calcular média<br>
+        ✓ Identificar aprovados<br>
+        ✓ Identificar recuperações<br>
+        ✓ Criar Tabela Dinâmica<br>
+        ✓ Criar gráfico<br>
+        ✓ Formatar a tabela
+    </div>
+</section>
+
+<section id="sql">
+    <h2>6. Conexão com SQL</h2>
+
+    <p>
+        A lógica utilizada no Excel é semelhante à utilizada em bancos
+        de dados SQL.
+    </p>
+
+    <h3>Excel</h3>
+
+    <pre>
+=FILTRAR(tbAlunos;tbAlunos[Curso]="Informática")
+    </pre>
+
+    <h3>SQL</h3>
+
+    <pre>
+SELECT *
+FROM alunos
+WHERE curso = 'Informática';
+    </pre>
+
+    <p>
+        Nos dois casos temos uma fonte de dados e fazemos uma pergunta
+        para obter informações específicas.
+    </p>
+
+    <div class="fluxo">
+        <div>DADOS</div>
+        <div>↓</div>
+        <div>ORGANIZAÇÃO</div>
+        <div>↓</div>
+        <div>CONSULTAS</div>
+        <div>↓</div>
+        <div>ANÁLISE</div>
+        <div>↓</div>
+        <div>DECISÃO</div>
+    </div>
+</section>
+
+<section id="perguntas">
+    <h2>7. Perguntas Avaliativas</h2>
+
+    <div class="pergunta">
+        <b>1. O que é um banco de dados?</b>
+        <p>É uma coleção organizada de informações que permite armazenar, consultar, alterar e analisar dados.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>2. O que é um campo?</b>
+        <p>É uma coluna que representa um tipo de informação.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>3. O que é um registro?</b>
+        <p>É uma linha completa contendo informações.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>4. Para que serve um ID?</b>
+        <p>Para identificar de forma única cada registro.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>5. Qual a diferença entre filtro e classificação?</b>
+        <p>O filtro seleciona os registros exibidos. A classificação modifica a ordem dos registros.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>6. Para que serve a validação de dados?</b>
+        <p>Para controlar os valores inseridos e manter os dados padronizados.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>7. Para que serve a função CONT.SE?</b>
+        <p>Para contar células que atendem a determinado critério.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>8. Para que serve a função MÉDIA?</b>
+        <p>Para calcular a média dos valores.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>9. O que é uma Tabela Dinâmica?</b>
+        <p>É uma ferramenta utilizada para resumir e analisar dados.</p>
+    </div>
+
+    <div class="pergunta">
+        <b>10. Por que manter os dados padronizados?</b>
+        <p>Para evitar inconsistências e facilitar consultas e análises.</p>
+    </div>
+</section>
+
+<footer>
+    <p>Banco de Dados com Excel — Técnico em Informática</p>
+    <p>3º Ano</p>
+</footer>
+
+<script>
+const alunos = [
+    {id:1,nome:"Ana Souza",curso:"Informática",turma:"A",idade:17,cidade:"São Paulo",nota:8.5},
+    {id:2,nome:"Bruno Lima",curso:"Informática",turma:"B",idade:18,cidade:"Guarulhos",nota:7},
+    {id:3,nome:"Carlos Santos",curso:"Informática",turma:"A",idade:17,cidade:"São Paulo",nota:9},
+    {id:4,nome:"Daniela Alves",curso:"Administração",turma:"A",idade:18,cidade:"Osasco",nota:6.5},
+    {id:5,nome:"Eduardo Silva",curso:"Informática",turma:"B",idade:19,cidade:"Guarulhos",nota:8},
+    {id:6,nome:"Fernanda Costa",curso:"Administração",turma:"A",idade:17,cidade:"São Paulo",nota:9.5},
+    {id:7,nome:"Gabriel Rocha",curso:"Informática",turma:"A",idade:18,cidade:"São Paulo",nota:5.5},
+    {id:8,nome:"Helena Martins",curso:"Informática",turma:"B",idade:17,cidade:"Mairiporã",nota:7.5},
+    {id:9,nome:"Igor Oliveira",curso:"Administração",turma:"B",idade:18,cidade:"Guarulhos",nota:6},
+    {id:10,nome:"Juliana Alves",curso:"Informática",turma:"A",idade:17,cidade:"São Paulo",nota:9}
+];
+
+const desafio = [
+    ["Ana Souza","Informática","A",8,9],
+    ["Bruno Lima","Informática","B",7,8],
+    ["Carlos Santos","Informática","A",9,9.5],
+    ["Daniela Alves","Administração","A",6,7],
+    ["Eduardo Silva","Informática","B",8,8.5],
+    ["Fernanda Costa","Administração","A",9,10],
+    ["Gabriel Rocha","Informática","A",5,6],
+    ["Helena Martins","Informática","B",7,8],
+    ["Igor Oliveira","Administração","B",6,6.5],
+    ["Juliana Alves","Informática","A",9,9]
+];
+
+let ordemDesc = true;
+
+function mostrarAlunos(lista = alunos) {
+
+    const tabela = document.getElementById("tabelaAlunos");
+
+    tabela.innerHTML = "";
+
+    lista.forEach(aluno => {
+
+        const situacao =
+            aluno.nota >= 7 ? "Aprovado" : "Recuperação";
+
+        tabela.innerHTML += `
+            <tr>
+                <td>${aluno.id}</td>
+                <td>${aluno.nome}</td>
+                <td>${aluno.curso}</td>
+                <td>${aluno.turma}</td>
+                <td>${aluno.idade}</td>
+                <td>${aluno.cidade}</td>
+                <td>${aluno.nota.toFixed(1)}</td>
+                <td class="${situacao === "Aprovado" ? "aprovado" : "recuperacao"}">
+                    ${situacao}
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function filtrar() {
+
+    const pesquisa =
+        document.getElementById("pesquisa").value.toLowerCase();
+
+    const curso =
+        document.getElementById("cursoFiltro").value;
+
+    const situacao =
+        document.getElementById("situacaoFiltro").value;
+
+    const resultado = alunos.filter(aluno => {
+
+        const status =
+            aluno.nota >= 7 ? "Aprovado" : "Recuperação";
+
+        return (
+            aluno.nome.toLowerCase().includes(pesquisa) &&
+            (curso === "" || aluno.curso === curso) &&
+            (situacao === "" || status === situacao)
+        );
+    });
+
+    mostrarAlunos(resultado);
+}
+
+function ordenarNota() {
+
+    alunos.sort((a,b) =>
+        ordemDesc ? b.nota - a.nota : a.nota - b.nota
+    );
+
+    ordemDesc = !ordemDesc;
+
+    mostrarAlunos();
+}
+
+function mostrarDesafio() {
+
+    const tabela =
+        document.getElementById("tabelaDesafio");
+
+    desafio.forEach((aluno, index) => {
+
+        const media = (aluno[3] + aluno[4]) / 2;
+
+        const situacao =
+            media >= 7 ? "Aprovado" : "Recuperação";
+
+        tabela.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${aluno[0]}</td>
+                <td>${aluno[1]}</td>
+                <td>${aluno[2]}</td>
+                <td>${aluno[3].toFixed(1)}</td>
+                <td>${aluno[4].toFixed(1)}</td>
+                <td>${media.toFixed(1)}</td>
+                <td class="${situacao === "Aprovado" ? "aprovado" : "recuperacao"}">
+                    ${situacao}
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function atualizarEstatisticas() {
+
+    const notas = alunos.map(a => a.nota);
+
+    const media =
+        notas.reduce((a,b) => a+b,0) / notas.length;
+
+    const aprovados =
+        alunos.filter(a => a.nota >= 7).length;
+
+    const recuperacao =
+        alunos.filter(a => a.nota < 7).length;
+
+    document.getElementById("totalAlunos").textContent = alunos.length;
+    document.getElementById("informatica").textContent =
+        alunos.filter(a => a.curso === "Informática").length;
+
+    document.getElementById("administracao").textContent =
+        alunos.filter(a => a.curso === "Administração").length;
+
+    document.getElementById("media").textContent =
+        media.toFixed(1).replace(".", ",");
+
+    document.getElementById("maiorNota").textContent =
+        Math.max(...notas).toFixed(1).replace(".", ",");
+
+    document.getElementById("menorNota").textContent =
+        Math.min(...notas).toFixed(1).replace(".", ",");
+
+    document.getElementById("aprovados").textContent = aprovados;
+    document.getElementById("recuperacao").textContent = recuperacao;
+}
+
+function criarGrafico() {
+
+    const canvas = document.getElementById("grafico");
+    const ctx = canvas.getContext("2d");
+
+    const dados = [
+        {nome:"Informática",valor:7},
+        {nome:"Administração",valor:3}
+    ];
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const largura = 180;
+    const baseY = 290;
+
+    dados.forEach((item,index) => {
+
+        const x = 130 + index * 280;
+        const altura = item.valor * 30;
+
+        ctx.fillStyle = "#217346";
+
+        ctx.fillRect(
+            x,
+            baseY - altura,
+            largura,
+            altura
+        );
+
+        ctx.fillStyle = "#222";
+        ctx.font = "18px Arial";
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            item.nome,
+            x + largura / 2,
+            baseY + 30
+        );
+
+        ctx.fillText(
+            item.valor,
+            x + largura / 2,
+            baseY - altura - 10
+        );
+    });
+
+    ctx.beginPath();
+    ctx.moveTo(80,baseY);
+    ctx.lineTo(650,baseY);
+    ctx.strokeStyle = "#333";
+    ctx.stroke();
+}
+
+mostrarAlunos();
+mostrarDesafio();
+atualizarEstatisticas();
+criarGrafico();
+</script>
+
+</body>
+</html>
